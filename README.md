@@ -16,9 +16,13 @@ Recognize Text on images in your notes. Replace the image with the text or appen
 | Image To Text: Append Selection                    | Append the recognized text to your image. Recognize text based on language defined in settings    |
 | Image To Text: Append Selection - custom language  | Append the recognized text to your image. Recognize text based on custom selection                |
 
-### Examples
+### Example
 
+Example Image:
 ![Lorem ipsum Image](./demo/loremipsum.png)
+
+Show Case:
+![Lorem ipsum Animated](./demo/loremipsum.gif)
 
 ## Installation
 
