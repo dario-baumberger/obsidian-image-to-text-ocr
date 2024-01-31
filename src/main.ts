@@ -1,6 +1,6 @@
 import {Editor, FileSystemAdapter, Notice, Plugin} from "obsidian";
 import {ImageToTextOcrPluginSettingTab} from "./settings";
-import {checkFormat, getText} from "./functions";
+import {checkFileType, checkFormat, getText} from "./functions";
 import {LanguageModal} from "./modal";
 import {languages} from "./languages";
 
@@ -27,8 +27,14 @@ export default class ImageToTextOcrPlugin extends Plugin {
 			editorCallback: async (editor: Editor) => {
 				const selection = editor.getSelection();
 				const imagePath = await this.getSelectedImagePath(selection);
-				if (imagePath) {
+
+				if (imagePath && checkFileType(imagePath)) {
 					try {
+						const loadingNotice = new Notice(
+							"Recoginition is running...",
+							0
+						);
+
 						const result = await getText(
 							imagePath,
 							this.settings.language
@@ -38,6 +44,8 @@ export default class ImageToTextOcrPlugin extends Plugin {
 							console.log(this.settings.language);
 							console.log(result);
 						}
+
+						loadingNotice.hide();
 
 						editor.replaceSelection(result);
 					} catch (error) {
@@ -65,6 +73,11 @@ export default class ImageToTextOcrPlugin extends Plugin {
 								name
 							})),
 							async (language) => {
+								const loadingNotice = new Notice(
+									"Recoginition is running...",
+									0
+								);
+
 								const result = await getText(
 									imagePath,
 									language.code
@@ -74,6 +87,8 @@ export default class ImageToTextOcrPlugin extends Plugin {
 									console.log(this.settings.language);
 									console.log(result);
 								}
+
+								loadingNotice.hide();
 
 								editor.replaceSelection(result);
 							}
@@ -95,6 +110,11 @@ export default class ImageToTextOcrPlugin extends Plugin {
 				const imagePath = await this.getSelectedImagePath(selection);
 				if (imagePath) {
 					try {
+						const loadingNotice = new Notice(
+							"Recoginition is running...",
+							0
+						);
+
 						const result = await getText(
 							imagePath,
 							this.settings.language
@@ -104,6 +124,8 @@ export default class ImageToTextOcrPlugin extends Plugin {
 							console.log(this.settings.language);
 							console.log(result);
 						}
+
+						loadingNotice.hide();
 
 						editor.replaceSelection(`${selection}${result}`);
 					} catch (error) {
@@ -131,6 +153,10 @@ export default class ImageToTextOcrPlugin extends Plugin {
 								name
 							})),
 							async (language) => {
+								const loadingNotice = new Notice(
+									"Recoginition is running...",
+									0
+								);
 								const result = await getText(
 									imagePath,
 									language.code
@@ -140,6 +166,8 @@ export default class ImageToTextOcrPlugin extends Plugin {
 									console.log(this.settings.language);
 									console.log(result);
 								}
+
+								loadingNotice.hide();
 
 								editor.replaceSelection(
 									`${selection}${result}`
@@ -203,15 +231,20 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		if (imageFilename) {
 			const fullPath = await this.resolveImagePath(imageFilename);
 
-			if (fullPath) {
+			if (fullPath && checkFileType(fullPath)) {
 				return fullPath;
 			} else {
 				new Notice("Could not resolve image path", 0);
 				throw new Error("Could not resolve image path");
 			}
 		} else {
-			new Notice("Wrong format", 0);
-			throw new Error("Wrong format");
+			new Notice(
+				"Wrong format or not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp",
+				0
+			);
+			throw new Error(
+				"Wrong format or not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp"
+			);
 		}
 	}
 }

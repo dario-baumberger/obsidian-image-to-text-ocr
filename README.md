@@ -33,6 +33,11 @@ Recognize Text on images in your notes. Replace the image with the text or appen
 -   Download `main.js`, `manifest.json`
 -   save into your vault `VaultFolder/.obsidian/plugins/obsidian-image-to-text-ocr/`
 
+## Roadmap
+
+-   Enable other formats than markdown or obsidian images e.g. image urls
+-   Enable recognition on images with defined size
+
 ## Contribution
 
 -   Feel free to [open an issue](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/issues) if you miss something
