@@ -18,7 +18,7 @@ Recognize Text on images in your notes. Replace the image with the text or appen
 
 ### Examples
 
-![Lorem ipsum Image](https://raw.githubusercontent.com/dario-baumberger/obsidian-image-to-text-ocr/master/demo/loremipsum.png)
+![Lorem ipsum Image](./demo/loremipsum.png)
 
 ## Installation
 
