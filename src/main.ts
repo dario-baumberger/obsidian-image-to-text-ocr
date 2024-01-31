@@ -28,7 +28,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 				const selection = editor.getSelection();
 				const imagePath = await this.getSelectedImagePath(selection);
 
-				if (imagePath && checkFileType(imagePath)) {
+				if (imagePath) {
 					try {
 						const loadingNotice = new Notice(
 							"Recoginition is running...",
@@ -231,7 +231,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		if (imageFilename) {
 			const fullPath = await this.resolveImagePath(imageFilename);
 
-			if (fullPath && checkFileType(fullPath)) {
+			if (fullPath) {
 				return fullPath;
 			} else {
 				new Notice("Could not resolve image path", 0);
