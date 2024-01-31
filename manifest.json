@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.1",
+	"id": "obsidian-image-to-text-ocr",
+	"name": "Image to Text OCR",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Convert a image in your note to text.",
+	"author": "Dario Baumberger",
+	"authorUrl": "https://github.com/dario-baumberger",
+	"fundingUrl": "https://www.buymeacoffee.com/dariobaumberger",
 	"isDesktopOnly": false
 }
