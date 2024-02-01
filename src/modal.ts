@@ -1,4 +1,4 @@
-import { App, SuggestModal } from "obsidian";
+import {App, SuggestModal} from "obsidian";
 
 interface Language {
 	code: string;
@@ -14,7 +14,6 @@ export class LanguageModal extends SuggestModal<Language> {
 	) {
 		super(app);
 		this.setPlaceholder(placeholder);
-		console.log(placeholder, languages);
 	}
 
 	getSuggestions(query: string): Language[] {
@@ -29,15 +28,14 @@ export class LanguageModal extends SuggestModal<Language> {
 		return this.languages;
 	}
 	renderSuggestion(language: Language, el: HTMLElement) {
-		console.log("render sug");
-		el.createEl("div", { text: `${language.name} (${language.code})` });
+		el.createEl("div", {text: `${language.name} (${language.code})`});
 	}
 	onChooseSuggestion(language: Language) {
 		this.callback(language);
 	}
 
 	onClose() {
-		const { contentEl } = this;
+		const {contentEl} = this;
 		contentEl.empty();
 	}
 }

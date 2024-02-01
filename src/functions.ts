@@ -18,7 +18,7 @@ export function checkFormat(selection: string): string | undefined {
 		obsidianImageRegex.exec(selection) ||
 		markdownImageRegex.exec(selection);
 
-	if (match && match[1] && checkFileType(match[1])) {
+	if (match && match[1]) {
 		return match[1];
 	}
 

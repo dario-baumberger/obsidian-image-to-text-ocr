@@ -228,23 +228,28 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 		const imageFilename = checkFormat(selection);
 
-		if (imageFilename) {
-			const fullPath = await this.resolveImagePath(imageFilename);
+		if (!imageFilename) {
+			new Notice("Wrong format", 0);
+			throw new Error("Wrong format");
+		}
 
-			if (fullPath) {
-				return fullPath;
-			} else {
-				new Notice("Could not resolve image path", 0);
-				throw new Error("Could not resolve image path");
-			}
-		} else {
+		if (!checkFileType(imageFilename)) {
 			new Notice(
-				"Wrong format or not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp",
+				"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp",
 				0
 			);
 			throw new Error(
-				"Wrong format or not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp"
+				"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp"
 			);
 		}
+
+		const fullPath = await this.resolveImagePath(imageFilename);
+
+		if (!fullPath) {
+			new Notice("Could not resolve image path", 0);
+			throw new Error("Could not resolve image path");
+		}
+
+		return fullPath;
 	}
 }
