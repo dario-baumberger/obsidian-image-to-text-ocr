@@ -1,6 +1,13 @@
 import {Editor, FileSystemAdapter, Notice, Plugin} from "obsidian";
 import {ImageToTextOcrPluginSettingTab} from "./settings";
-import {checkFileType, checkFormat, getText} from "./functions";
+import {
+	checkFileType,
+	extractPath,
+	getText,
+	isMarkdownTag,
+	isObsidianTag,
+	isValidUrl
+} from "./functions";
 import {LanguageModal} from "./modal";
 import {languages} from "./languages";
 
@@ -203,34 +210,56 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		const files = this.app.vault.getFiles();
 		const imageFile = files.find((file) => file.name === imageFilename);
 
-		if (imageFile) {
-			const adapter = this.app.vault.adapter;
-			if (adapter instanceof FileSystemAdapter) {
-				const resourcePath = adapter.getResourcePath(imageFile.path);
-				if (this.settings.devMode) {
-					console.log(resourcePath);
-				}
-				return resourcePath;
-			} else {
-				new Notice("Error resolving adapter", 0);
-				throw new Error("Error resolving adapter");
-			}
-		} else {
+		if (!imageFile) {
 			new Notice("Image file not found in the vault.", 0);
 			throw new Error("Image file not found in the vault.");
+		}
+
+		const adapter = this.app.vault.adapter;
+		if (adapter instanceof FileSystemAdapter) {
+			const resourcePath = adapter.getResourcePath(imageFile.path);
+			if (this.settings.devMode) {
+				console.log(resourcePath);
+			}
+			return resourcePath;
+		} else {
+			new Notice("Error resolving adapter", 0);
+			throw new Error("Error resolving adapter");
 		}
 	}
 
 	async getSelectedImagePath(selection: string): Promise<string> {
+		let imageFilename!: string | undefined;
+		let fullPath!: string | undefined;
+
 		if (this.settings.devMode) {
 			console.log(selection);
 		}
 
-		const imageFilename = checkFormat(selection);
+		if (isValidUrl(selection)) {
+			imageFilename = selection;
+			fullPath = selection;
+		} else if (isObsidianTag(selection)) {
+			imageFilename = extractPath(selection);
+			fullPath = imageFilename
+				? await this.resolveImagePath(imageFilename)
+				: undefined;
+		} else if (isMarkdownTag(selection)) {
+			imageFilename = extractPath(selection);
+			fullPath =
+				imageFilename && isValidUrl(imageFilename)
+					? imageFilename
+					: undefined;
+		}
 
 		if (!imageFilename) {
-			new Notice("Wrong format", 0);
-			throw new Error("Wrong format");
+			new Notice(
+				"Not supported selection. Allowed: Obsidian Images, Markdown Images and Urls",
+				0
+			);
+			throw new Error(
+				"Not supported selection. Allowed: Obsidian Images, Markdown Images and Urls"
+			);
 		}
 
 		if (!checkFileType(imageFilename)) {
@@ -242,8 +271,6 @@ export default class ImageToTextOcrPlugin extends Plugin {
 				"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp"
 			);
 		}
-
-		const fullPath = await this.resolveImagePath(imageFilename);
 
 		if (!fullPath) {
 			new Notice("Could not resolve image path", 0);

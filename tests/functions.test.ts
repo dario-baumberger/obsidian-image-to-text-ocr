@@ -1,6 +1,12 @@
 import {expect, test} from "vitest";
 import {describe} from "node:test";
-import {checkFileType, checkFormat} from "src/functions";
+import {
+	checkFileType,
+	extractPath,
+	isMarkdownTag,
+	isObsidianTag,
+	isValidUrl
+} from "src/functions";
 describe("functions", () => {
 	describe("checkFileType", () => {
 		describe("should be true", () => {
@@ -49,31 +55,101 @@ describe("functions", () => {
 		});
 	});
 
-	describe("checkFormat", () => {
+	describe("isObsidianTag", () => {
+		describe("should be true", () => {
+			test("Obsidian Tag", () => {
+				expect(isObsidianTag("![[Image Name.png]]")).toStrictEqual(
+					true
+				);
+			});
+		});
+		describe("should be false", () => {
+			test("Not Obsidian Tag", () => {
+				expect(isObsidianTag("![Image Name.png]")).toStrictEqual(false);
+			});
+		});
+	});
+
+	describe("isMarkdownTag", () => {
+		describe("should be true", () => {
+			test("Markdown Tag", () => {
+				expect(
+					isMarkdownTag("![Image](https://www.test.com/Name.png)")
+				).toStrictEqual(true);
+			});
+		});
+		describe("should be false", () => {
+			test("Not Markdown Tag", () => {
+				expect(isMarkdownTag("![Image Name.png]")).toStrictEqual(false);
+			});
+		});
+	});
+
+	describe("extractPath", () => {
 		test("Obsidian Internal Image", () => {
-			expect(checkFormat("![[Image Name.png]]")).toStrictEqual(
+			expect(extractPath("![[Image Name.png]]")).toStrictEqual(
 				"Image Name.png"
 			);
 		});
 		test("MD Internal Image", () => {
-			expect(checkFormat("![Image](Image Name.png)")).toStrictEqual(
+			expect(extractPath("![Image](Image Name.png)")).toStrictEqual(
 				"Image Name.png"
 			);
 		});
 		test("Obsidian External Image", () => {
 			expect(
-				checkFormat("![[https://www.test.com/Name.png]]")
+				extractPath("![[https://www.test.com/Name.png]]")
 			).toStrictEqual("https://www.test.com/Name.png");
 		});
 		test("MD External Image", () => {
 			expect(
-				checkFormat("![Image](https://www.test.com/Name.png)")
+				extractPath("![Image](https://www.test.com/Name.png)")
 			).toStrictEqual("https://www.test.com/Name.png");
 		});
 		test("URL", () => {
-			expect(checkFormat("https://www.test.com/Name.png")).toStrictEqual(
+			expect(extractPath("https://www.test.com/Name.png")).toStrictEqual(
 				undefined
 			);
+		});
+	});
+
+	describe("isValidUrl", () => {
+		describe("should be true", () => {
+			test("http", () => {
+				expect(isValidUrl("http://example.com")).toStrictEqual(true);
+			});
+
+			test("http", () => {
+				expect(isValidUrl("https://www.example.com")).toStrictEqual(
+					true
+				);
+			});
+
+			test("with path", () => {
+				expect(
+					isValidUrl("https://www.example.com/test/123/lo-rem")
+				).toStrictEqual(true);
+			});
+
+			test("with file", () => {
+				expect(
+					isValidUrl("https://www.example.com/test/123/lo-rem.png")
+				).toStrictEqual(true);
+			});
+		});
+		describe("should be false", () => {
+			test("no protocol", () => {
+				expect(isValidUrl("www.example.com")).toStrictEqual(false);
+			});
+
+			test("no www", () => {
+				console.log(isValidUrl("example.com"));
+				expect(isValidUrl("example.com")).toStrictEqual(false);
+			});
+
+			test("string", () => {
+				expect(isValidUrl("example")).toStrictEqual(false);
+			});
 		});
 	});
 });

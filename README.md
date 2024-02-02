@@ -39,7 +39,6 @@ Show Case:
 
 ## Roadmap
 
--   Enable other formats than markdown or obsidian images e.g. image urls
 -   Enable recognition on images with defined size
 
 ## Contribution
