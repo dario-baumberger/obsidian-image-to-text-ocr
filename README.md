@@ -69,6 +69,3 @@ This plugin uses [tesseract.js](https://github.com/naptha/tesseract.js/) to reco
 -   Feel free to [open an issue](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/issues) if you miss something
 -   Feel free to open a Pull request to implement a feature
     -   Please extend tests if you add logic
-
-todo
-command icons

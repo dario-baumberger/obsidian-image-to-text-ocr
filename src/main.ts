@@ -217,10 +217,10 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	async resolveImagePath(imageFilename: string): Promise<string> {
+	async resolveImagePath(fileName: string): Promise<string> {
 		// todo avoid getFiles
 		const files = this.app.vault.getFiles();
-		const imageFile = files.find((file) => file.name === imageFilename);
+		const imageFile = files.find((file) => file.name === fileName);
 
 		if (!imageFile) {
 			new Notice("Image file not found in the vault.", 0);
@@ -241,7 +241,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 	}
 
 	async getSelectedImagePath(selection: string): Promise<string> {
-		let imageFilename!: string | undefined;
+		let imagePath!: string | undefined;
 		let fullPath!: string | undefined;
 
 		if (this.settings.devMode) {
@@ -249,30 +249,28 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		}
 
 		if (isObsidianTag(selection)) {
-			imageFilename = extractObsidianPath(selection);
-			fullPath = imageFilename
-				? await this.resolveImagePath(imageFilename)
+			imagePath = extractObsidianPath(selection);
+			fullPath = imagePath
+				? await this.resolveImagePath(imagePath)
 				: undefined;
 		} else if (isValidUrl(selection)) {
-			imageFilename = selection;
+			imagePath = selection;
 			fullPath = selection;
 		} else if (isImgTag(selection)) {
-			imageFilename = extractSrc(selection);
-			fullPath = imageFilename;
+			imagePath = extractSrc(selection);
+			fullPath = imagePath;
 		} else if (isMarkdownTag(selection)) {
-			imageFilename = extractMdPath(selection);
+			imagePath = extractMdPath(selection);
 			fullPath =
-				imageFilename && isValidUrl(imageFilename)
-					? imageFilename
-					: undefined;
+				imagePath && isValidUrl(imagePath) ? imagePath : undefined;
 		}
 
 		if (this.settings.devMode) {
-			console.log(`imageFilename: ${imageFilename}`);
+			console.log(`imagePath: ${imagePath}`);
 			console.log(`fullPath: ${fullPath}`);
 		}
 
-		if (!imageFilename) {
+		if (!imagePath) {
 			new Notice(
 				"Not supported selection. Allowed: Obsidian Images, Markdown Images and Urls",
 				0
@@ -282,7 +280,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 			);
 		}
 
-		if (!checkFileType(imageFilename)) {
+		if (!checkFileType(imagePath)) {
 			new Notice(
 				"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp",
 				0
