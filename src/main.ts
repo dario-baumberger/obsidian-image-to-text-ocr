@@ -217,6 +217,9 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
+	/**
+	 * get file path based on filename
+	 */
 	async resolveImagePath(fileName: string): Promise<string> {
 		// todo avoid getFiles
 		const files = this.app.vault.getFiles();
@@ -240,6 +243,9 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		}
 	}
 
+	/**
+	 * get path from selection if possible
+	 */
 	async getSelectedImagePath(selection: string): Promise<string> {
 		let imagePath!: string | undefined;
 		let fullPath!: string | undefined;
