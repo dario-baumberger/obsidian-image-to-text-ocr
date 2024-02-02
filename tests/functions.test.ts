@@ -2,7 +2,10 @@ import {expect, test} from "vitest";
 import {describe} from "node:test";
 import {
 	checkFileType,
-	extractPath,
+	extractMdPath,
+	extractObsidianPath,
+	extractSrc,
+	isImgTag,
 	isMarkdownTag,
 	isObsidianTag,
 	isValidUrl
@@ -85,31 +88,99 @@ describe("functions", () => {
 		});
 	});
 
-	describe("extractPath", () => {
-		test("Obsidian Internal Image", () => {
-			expect(extractPath("![[Image Name.png]]")).toStrictEqual(
-				"Image Name.png"
+	describe("isImgTag", () => {
+		describe("should be true", () => {
+			test("Img Tag", () => {
+				expect(
+					isImgTag(
+						"<img src='https://www.test.com/Name.png' alt='drawing' style='width:200px;'/>"
+					)
+				).toStrictEqual(true);
+			});
+		});
+		describe("should be false", () => {
+			test("Not Img Tag", () => {
+				expect(
+					isImgTag(
+						"<img src='https://www.test.com/Name.png' alt='drawing' style='width:200px;'>"
+					)
+				).toStrictEqual(false);
+			});
+		});
+	});
+
+	describe("extractSrc", () => {
+		test("src attr", () => {
+			expect(extractSrc("<img src='test.png'>")).toStrictEqual(
+				"test.png"
 			);
 		});
+
+		test("No src attr", () => {
+			expect(extractSrc("<img srcset='test.png'>")).toStrictEqual(
+				undefined
+			);
+		});
+	});
+
+	describe("extractMdPath", () => {
 		test("MD Internal Image", () => {
-			expect(extractPath("![Image](Image Name.png)")).toStrictEqual(
+			expect(extractMdPath("![Image](Image Name.png)")).toStrictEqual(
 				"Image Name.png"
 			);
-		});
-		test("Obsidian External Image", () => {
-			expect(
-				extractPath("![[https://www.test.com/Name.png]]")
-			).toStrictEqual("https://www.test.com/Name.png");
 		});
 		test("MD External Image", () => {
 			expect(
-				extractPath("![Image](https://www.test.com/Name.png)")
+				extractMdPath("![Image](https://www.test.com/Name.png)")
 			).toStrictEqual("https://www.test.com/Name.png");
 		});
-		test("URL", () => {
-			expect(extractPath("https://www.test.com/Name.png")).toStrictEqual(
+		test("Obsidian External Image", () => {
+			expect(
+				extractMdPath("![[https://www.test.com/Name.png]]")
+			).toStrictEqual(undefined);
+		});
+		test("Obsidian Internal Image", () => {
+			expect(extractMdPath("![[Image Name.png]]")).toStrictEqual(
 				undefined
 			);
+		});
+		test("URL", () => {
+			expect(
+				extractMdPath("https://www.test.com/Name.png")
+			).toStrictEqual(undefined);
+		});
+	});
+
+	describe("extractObsidianPath", () => {
+		test("Obsidian External Image", () => {
+			expect(
+				extractObsidianPath("![[https://www.test.com/Name.png]]")
+			).toStrictEqual("https://www.test.com/Name.png");
+		});
+		test("Obsidian Internal Image", () => {
+			expect(extractObsidianPath("![[Image Name.png]]")).toStrictEqual(
+				"Image Name.png"
+			);
+		});
+		test("Obsidian Internal Image with size", () => {
+			expect(
+				extractObsidianPath("![[Image Name.png|300]]")
+			).toStrictEqual("Image Name.png");
+		});
+		test("MD Internal Image", () => {
+			expect(
+				extractObsidianPath("![Image](Image Name.png)")
+			).toStrictEqual(undefined);
+		});
+		test("MD External Image", () => {
+			expect(
+				extractObsidianPath("![Image](https://www.test.com/Name.png)")
+			).toStrictEqual(undefined);
+		});
+		test("URL", () => {
+			expect(
+				extractObsidianPath("https://www.test.com/Name.png")
+			).toStrictEqual(undefined);
 		});
 	});
 
@@ -143,7 +214,6 @@ describe("functions", () => {
 			});
 
 			test("no www", () => {
-				console.log(isValidUrl("example.com"));
 				expect(isValidUrl("example.com")).toStrictEqual(false);
 			});
 

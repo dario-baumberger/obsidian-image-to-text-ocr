@@ -2,16 +2,21 @@ import {createWorker} from "tesseract.js";
 
 const MD_TAG = /!\[.*?\]\((.*?)\)/;
 const OBSIDIAN_TAG = /!\[\[(.*?)\]\]/;
+const IMG_TAG = /<img([\w\W]+?)\/>/;
 
 export async function getText(
 	imagePath: string,
 	language = "eng"
 ): Promise<string> {
-	const worker = await createWorker(language);
-	const ret = await worker.recognize(imagePath);
-	await worker.terminate();
+	try {
+		const worker = await createWorker(language);
+		const result = await worker.recognize(imagePath);
+		await worker.terminate();
 
-	return ret.data.text;
+		return result.data.text;
+	} catch (e) {
+		throw new Error(e);
+	}
 }
 
 export function isValidUrl(url: string): boolean {
@@ -35,18 +40,28 @@ export function isMarkdownTag(string: string): boolean {
 	return pattern.test(string);
 }
 
-export function extractPath(selection: string): string | undefined {
-	const obsidianImageRegex = OBSIDIAN_TAG;
-	const markdownImageRegex = MD_TAG;
-	const match =
-		obsidianImageRegex.exec(selection) ||
-		markdownImageRegex.exec(selection);
+export function isImgTag(string: string): boolean {
+	const pattern = IMG_TAG;
 
-	if (match && match[1]) {
-		return match[1];
-	}
+	return pattern.test(string);
+}
 
-	return undefined;
+export function extractSrc(selection: string): string | undefined {
+	const match = selection.match(/src\s*=\s*['"](.+?)['"]/);
+
+	return match && match[1] ? match[1] : undefined;
+}
+
+export function extractMdPath(selection: string): string | undefined {
+	const match = selection.match(MD_TAG);
+
+	return match && match[1] ? match[1] : undefined;
+}
+
+export function extractObsidianPath(selection: string): string | undefined {
+	const match = selection.match(OBSIDIAN_TAG);
+
+	return match && match[1] ? match[1].split("|")[0] : undefined;
 }
 
 export function checkFileType(filePath: string): boolean {

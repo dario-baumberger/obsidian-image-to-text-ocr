@@ -1,9 +1,12 @@
-import {Editor, FileSystemAdapter, Notice, Plugin} from "obsidian";
+import {Editor, FileSystemAdapter, Notice, Plugin, TFile} from "obsidian";
 import {ImageToTextOcrPluginSettingTab} from "./settings";
 import {
 	checkFileType,
-	extractPath,
+	extractMdPath,
+	extractObsidianPath,
+	extractSrc,
 	getText,
+	isImgTag,
 	isMarkdownTag,
 	isObsidianTag,
 	isValidUrl
@@ -28,7 +31,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.addCommand({
-			id: "image-to-text-replace",
+			id: "replace",
 			name: "Image To Text: Replace Selection",
 			icon: "table",
 			editorCallback: async (editor: Editor) => {
@@ -48,8 +51,10 @@ export default class ImageToTextOcrPlugin extends Plugin {
 						);
 
 						if (this.settings.devMode) {
-							console.log(this.settings.language);
-							console.log(result);
+							console.log(
+								`this.settings.language: ${this.settings.language}`
+							);
+							console.log(`result: ${result}`);
 						}
 
 						loadingNotice.hide();
@@ -64,7 +69,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: "image-to-text-replace-select-language",
+			id: "replace-select-language",
 			name: "Image To Text: Replace Selection - custom language",
 			icon: "table",
 			editorCallback: async (editor: Editor) => {
@@ -91,8 +96,10 @@ export default class ImageToTextOcrPlugin extends Plugin {
 								);
 
 								if (this.settings.devMode) {
-									console.log(this.settings.language);
-									console.log(result);
+									console.log(
+										`this.settings.language: ${this.settings.language}`
+									);
+									console.log(`result: ${result}`);
 								}
 
 								loadingNotice.hide();
@@ -109,7 +116,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: "image-to-text-append",
+			id: "append",
 			name: "Image To Text: Append Selection",
 			icon: "table",
 			editorCallback: async (editor: Editor) => {
@@ -128,8 +135,10 @@ export default class ImageToTextOcrPlugin extends Plugin {
 						);
 
 						if (this.settings.devMode) {
-							console.log(this.settings.language);
-							console.log(result);
+							console.log(
+								`this.settings.language: ${this.settings.language}`
+							);
+							console.log(`result: ${result}`);
 						}
 
 						loadingNotice.hide();
@@ -144,7 +153,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: "image-to-text-append-select-language",
+			id: "append-select-language",
 			name: "Image To Text: Append Selection - custom language",
 			icon: "table",
 			editorCallback: async (editor: Editor) => {
@@ -170,8 +179,10 @@ export default class ImageToTextOcrPlugin extends Plugin {
 								);
 
 								if (this.settings.devMode) {
-									console.log(this.settings.language);
-									console.log(result);
+									console.log(
+										`this.settings.language: ${this.settings.language}`
+									);
+									console.log(`result: ${result}`);
 								}
 
 								loadingNotice.hide();
@@ -207,6 +218,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 	}
 
 	async resolveImagePath(imageFilename: string): Promise<string> {
+		// todo avoid getFiles
 		const files = this.app.vault.getFiles();
 		const imageFile = files.find((file) => file.name === imageFilename);
 
@@ -219,7 +231,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		if (adapter instanceof FileSystemAdapter) {
 			const resourcePath = adapter.getResourcePath(imageFile.path);
 			if (this.settings.devMode) {
-				console.log(resourcePath);
+				console.log(`resourcePath: ${resourcePath}`);
 			}
 			return resourcePath;
 		} else {
@@ -233,23 +245,31 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		let fullPath!: string | undefined;
 
 		if (this.settings.devMode) {
-			console.log(selection);
+			console.log(`selection: ${selection}`);
 		}
 
-		if (isValidUrl(selection)) {
-			imageFilename = selection;
-			fullPath = selection;
-		} else if (isObsidianTag(selection)) {
-			imageFilename = extractPath(selection);
+		if (isObsidianTag(selection)) {
+			imageFilename = extractObsidianPath(selection);
 			fullPath = imageFilename
 				? await this.resolveImagePath(imageFilename)
 				: undefined;
+		} else if (isValidUrl(selection)) {
+			imageFilename = selection;
+			fullPath = selection;
+		} else if (isImgTag(selection)) {
+			imageFilename = extractSrc(selection);
+			fullPath = imageFilename;
 		} else if (isMarkdownTag(selection)) {
-			imageFilename = extractPath(selection);
+			imageFilename = extractMdPath(selection);
 			fullPath =
 				imageFilename && isValidUrl(imageFilename)
 					? imageFilename
 					: undefined;
+		}
+
+		if (this.settings.devMode) {
+			console.log(`imageFilename: ${imageFilename}`);
+			console.log(`fullPath: ${fullPath}`);
 		}
 
 		if (!imageFilename) {
