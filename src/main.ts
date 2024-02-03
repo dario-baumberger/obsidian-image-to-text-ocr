@@ -221,7 +221,6 @@ export default class ImageToTextOcrPlugin extends Plugin {
 	 * get file path based on filename
 	 */
 	async resolveImagePath(fileName: string): Promise<string> {
-		// todo avoid getFiles
 		const files = this.app.vault.getFiles();
 		const imageFile = files.find((file) => file.name === fileName);
 
