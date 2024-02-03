@@ -24,6 +24,15 @@ const DEFAULT_SETTINGS: ImageToTextOcrPluginSettings = {
 	language: "eng"
 };
 
+const MESSAGE_FILETYPE =
+	"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp";
+const MESSAGE_CONTENT =
+	"Not supported content. Allowed: Obsidian Images, Markdown Images and Urls";
+const MESSAGE_PATH = "Could not resolve image path";
+const MESSAGE_ADAPTER = "Error resolving adapter";
+const MESSAGE_NOTFOUND = "Image file not found in the vault.";
+
+const MESSAGE_RUNNING = "Recoginition is running...";
 export default class ImageToTextOcrPlugin extends Plugin {
 	settings: ImageToTextOcrPluginSettings;
 
@@ -40,10 +49,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 				if (imagePath) {
 					try {
-						const loadingNotice = new Notice(
-							"Recoginition is running...",
-							0
-						);
+						const loadingNotice = new Notice(MESSAGE_RUNNING, 0);
 
 						const result = await getText(
 							imagePath,
@@ -86,7 +92,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 							})),
 							async (language) => {
 								const loadingNotice = new Notice(
-									"Recoginition is running...",
+									MESSAGE_RUNNING,
 									0
 								);
 
@@ -124,10 +130,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 				const imagePath = await this.getSelectedImagePath(selection);
 				if (imagePath) {
 					try {
-						const loadingNotice = new Notice(
-							"Recoginition is running...",
-							0
-						);
+						const loadingNotice = new Notice(MESSAGE_RUNNING, 0);
 
 						const result = await getText(
 							imagePath,
@@ -170,7 +173,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 							})),
 							async (language) => {
 								const loadingNotice = new Notice(
-									"Recoginition is running...",
+									MESSAGE_RUNNING,
 									0
 								);
 								const result = await getText(
@@ -225,8 +228,8 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		const imageFile = files.find((file) => file.name === fileName);
 
 		if (!imageFile) {
-			new Notice("Image file not found in the vault.", 0);
-			throw new Error("Image file not found in the vault.");
+			new Notice(MESSAGE_NOTFOUND, 0);
+			throw new Error(MESSAGE_NOTFOUND);
 		}
 
 		const adapter = this.app.vault.adapter;
@@ -237,8 +240,8 @@ export default class ImageToTextOcrPlugin extends Plugin {
 			}
 			return resourcePath;
 		} else {
-			new Notice("Error resolving adapter", 0);
-			throw new Error("Error resolving adapter");
+			new Notice(MESSAGE_ADAPTER, 0);
+			throw new Error(MESSAGE_ADAPTER);
 		}
 	}
 
@@ -276,28 +279,18 @@ export default class ImageToTextOcrPlugin extends Plugin {
 		}
 
 		if (!imagePath) {
-			new Notice(
-				"Not supported selection. Allowed: Obsidian Images, Markdown Images and Urls",
-				0
-			);
-			throw new Error(
-				"Not supported selection. Allowed: Obsidian Images, Markdown Images and Urls"
-			);
+			new Notice(MESSAGE_CONTENT, 0);
+			throw new Error(MESSAGE_CONTENT);
 		}
 
 		if (!checkFileType(imagePath)) {
-			new Notice(
-				"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp",
-				0
-			);
-			throw new Error(
-				"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp"
-			);
+			new Notice(MESSAGE_FILETYPE, 0);
+			throw new Error(MESSAGE_FILETYPE);
 		}
 
 		if (!fullPath) {
-			new Notice("Could not resolve image path", 0);
-			throw new Error("Could not resolve image path");
+			new Notice(MESSAGE_PATH, 0);
+			throw new Error(MESSAGE_PATH);
 		}
 
 		return fullPath;
