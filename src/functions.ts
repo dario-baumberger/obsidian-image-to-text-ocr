@@ -3,6 +3,7 @@ import {createWorker} from "tesseract.js";
 const MD_TAG = /!\[.*?\]\((.*?)\)/;
 const OBSIDIAN_TAG = /!\[\[(.*?)\]\]/;
 const IMG_TAG = /<img([\w\W]+?)\/>/;
+const ALLOWED_IMG_TYPES = /\.(jpg|jpeg|png|gif|bmp|pbm|webp)$/i;
 
 /**
  * recognize and return text on images
@@ -38,9 +39,7 @@ export function isValidUrl(url: string): boolean {
  * check if string is a obsidian image tag
  */
 export function isObsidianTag(string: string): boolean {
-	const pattern = OBSIDIAN_TAG;
-
-	return pattern.test(string);
+	return OBSIDIAN_TAG.test(string);
 }
 
 /**
@@ -90,6 +89,5 @@ export function extractObsidianPath(selection: string): string | undefined {
  * checky only based on file ending, not on it's content
  */
 export function checkFileType(filePath: string): boolean {
-	const imageRegex = /\.(jpg|jpeg|png|gif|bmp|pbm|webp)$/i;
-	return imageRegex.test(filePath);
+	return ALLOWED_IMG_TYPES.test(filePath);
 }
