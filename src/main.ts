@@ -256,18 +256,25 @@ export default class ImageToTextOcrPlugin extends Plugin {
 			console.log(`selection: ${selection}`);
 		}
 
+		// check if is obsidian tag and extract real file path
 		if (isObsidianTag(selection)) {
 			imagePath = extractObsidianPath(selection);
 			fullPath = imagePath
 				? await this.resolveImagePath(imagePath)
 				: undefined;
-		} else if (isValidUrl(selection)) {
+		}
+		// check if is url
+		else if (isValidUrl(selection)) {
 			imagePath = selection;
 			fullPath = selection;
-		} else if (isImgTag(selection)) {
+		}
+		// check if is img tag, extract src attribute
+		else if (isImgTag(selection)) {
 			imagePath = extractSrc(selection);
 			fullPath = imagePath;
-		} else if (isMarkdownTag(selection)) {
+		}
+		// check if is md image tag, extract path
+		else if (isMarkdownTag(selection)) {
 			imagePath = extractMdPath(selection);
 			fullPath =
 				imagePath && isValidUrl(imagePath) ? imagePath : undefined;
