@@ -146,7 +146,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 						loadingNotice.hide();
 
-						editor.replaceSelection(`${selection}${result}`);
+						editor.replaceSelection(`${selection}\n${result}`);
 					} catch (error) {
 						console.error(error);
 						new Notice(error);
@@ -191,7 +191,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 								loadingNotice.hide();
 
 								editor.replaceSelection(
-									`${selection}${result}`
+									`${selection}\n${result}`
 								);
 							}
 						).open();
