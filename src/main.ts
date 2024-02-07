@@ -29,7 +29,8 @@ const MESSAGE_FILETYPE =
 const MESSAGE_CONTENT =
 	"Not supported content. Allowed: Obsidian Images, Markdown Images and Urls";
 const MESSAGE_PATH = "Could not resolve image path";
-const MESSAGE_ADAPTER = "Error resolving adapter";
+const MESSAGE_ADAPTER =
+	"Error resolving adapter. Obsidian images are not supported on mobile devices.";
 const MESSAGE_NOTFOUND = "Image file not found in the vault.";
 
 const MESSAGE_RUNNING = "Recoginition is running...";
