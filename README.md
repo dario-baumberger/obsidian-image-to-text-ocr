@@ -40,6 +40,10 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 | URL                           | `https://www.example.com/example.png`               | URL to an image                    |
 | img Tag                       | `<img src="https://www.example.com/example.png" />` | Img tag with a valid src attribute |
 
+## Supported Devices
+
+Obsidian images are not supported on mobile devices since the file adapter works only on desktop. All other images are available also on mobile.
+
 ## Installation
 
 ### Community Plugin
