@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-image-to-text-ocr",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Convert a image in your note to text",
 	"main": "main.js",
 	"scripts": {

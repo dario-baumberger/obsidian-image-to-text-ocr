@@ -1,7 +1,7 @@
 {
 	"id": "image-to-text-ocr",
 	"name": "Image to Text OCR",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Convert a image in your note to text.",
 	"author": "Dario Baumberger",
