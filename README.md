@@ -3,18 +3,18 @@
 ![GitHub stars](https://img.shields.io/github/stars/dario-baumberger/obsidian-image-to-text-ocr?style=flat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/blob/master/LICENCE)
 
-# Obsidian Image to Text
+# Obsidian Image to text
 
 Recognize Text on images in your notes. Select the image and run the command. The recognized text will be appended to your image or will replace your image - depending on the command
 
 ## Commands
 
-| Command                                            | Description                                                                                           |
-| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Image To Text: Replace Selection                   | Replace your image with the recognized text. Recognize text based on the language defined in settings |
-| Image To Text: Replace Selection - custom language | Replace your image with the recognized text. Recognize text based on custom selection                 |
-| Image To Text: Append Selection                    | Append the recognized text to your image. Recognize text based on language defined in settings        |
-| Image To Text: Append Selection - custom language  | Append the recognized text to your image. Recognize text based on custom selection                    |
+| Command                             | Description                                                                                           |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Replace selection                   | Replace your image with the recognized text. Recognize text based on the language defined in settings |
+| Replace selection - custom language | Replace your image with the recognized text. Recognize text based on custom selection                 |
+| Append selection                    | Append the recognized text to your image. Recognize text based on language defined in settings        |
+| Append selection - custom language  | Append the recognized text to your image. Recognize text based on custom selection                    |
 
 ## Example
 
@@ -39,10 +39,6 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 | Markdown Image                | `![Image](https://www.example.com/example.png)`     | Markdown image tag                 |
 | URL                           | `https://www.example.com/example.png`               | URL to an image                    |
 | img Tag                       | `<img src="https://www.example.com/example.png" />` | Img tag with a valid src attribute |
-
-## Supported Devices
-
-Obsidian images are not supported on mobile devices since the file adapter works only on desktop. All other images are available also on mobile.
 
 ## Installation
 

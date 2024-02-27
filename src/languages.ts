@@ -100,5 +100,5 @@ export const languages: Record<string, string> = {
 	uzb: "Uzbek",
 	uzb_cyrl: "Uzbek - Cyrillic",
 	vie: "Vietnamese",
-	yid: "Yiddish",
+	yid: "Yiddish"
 };
