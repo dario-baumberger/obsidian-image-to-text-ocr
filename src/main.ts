@@ -1,4 +1,4 @@
-import {Editor, FileSystemAdapter, Notice, Plugin, TFile} from "obsidian";
+import {Editor, Notice, Plugin} from "obsidian";
 import {ImageToTextOcrPluginSettingTab} from "./settings";
 import {
 	checkFileType,
@@ -29,8 +29,6 @@ const MESSAGE_FILETYPE =
 const MESSAGE_CONTENT =
 	"Not supported content. Allowed: Obsidian Images, Markdown Images and Urls";
 const MESSAGE_PATH = "Could not resolve image path";
-const MESSAGE_ADAPTER =
-	"Error resolving adapter. Obsidian images are not supported on mobile devices.";
 const MESSAGE_NOTFOUND = "Image file not found in the vault.";
 
 const MESSAGE_RUNNING = "Recoginition is running...";
@@ -225,25 +223,22 @@ export default class ImageToTextOcrPlugin extends Plugin {
 	 * get file path based on filename
 	 */
 	async resolveImagePath(fileName: string): Promise<string> {
-		const files = this.app.vault.getFiles();
-		const imageFile = files.find((file) => file.name === fileName);
+		const imageFile = this.app.metadataCache.getFirstLinkpathDest(
+			fileName,
+			""
+		);
 
 		if (!imageFile) {
 			new Notice(MESSAGE_NOTFOUND, 0);
 			throw new Error(MESSAGE_NOTFOUND);
 		}
 
-		const adapter = this.app.vault.adapter;
-		if (adapter instanceof FileSystemAdapter) {
-			const resourcePath = adapter.getResourcePath(imageFile.path);
-			if (this.settings.devMode) {
-				console.log(`resourcePath: ${resourcePath}`);
-			}
-			return resourcePath;
-		} else {
-			new Notice(MESSAGE_ADAPTER, 0);
-			throw new Error(MESSAGE_ADAPTER);
+		const resourcePath = this.app.vault.getResourcePath(imageFile);
+
+		if (this.settings.devMode) {
+			console.log(`resourcePath: ${resourcePath}`);
 		}
+		return resourcePath;
 	}
 
 	/**

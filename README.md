@@ -3,7 +3,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/dario-baumberger/obsidian-image-to-text-ocr?style=flat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/blob/master/LICENCE)
 
-# Obsidian Image to Text
+# Obsidian Image to text
 
 Recognize Text on images in your notes. Select the image and run the command. The recognized text will be appended to your image or will replace your image - depending on the command
 
@@ -39,10 +39,6 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 | Markdown Image                | `![Image](https://www.example.com/example.png)`     | Markdown image tag                 |
 | URL                           | `https://www.example.com/example.png`               | URL to an image                    |
 | img Tag                       | `<img src="https://www.example.com/example.png" />` | Img tag with a valid src attribute |
-
-## Supported Devices
-
-Obsidian images are not supported on mobile devices since the file adapter works only on desktop. All other images are available also on mobile.
 
 ## Installation
 
