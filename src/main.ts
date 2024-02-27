@@ -42,7 +42,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 		this.addCommand({
 			id: "replace",
-			name: "Image To Text: Replace Selection",
+			name: "Replace Selection",
 			icon: "image-minus",
 			editorCallback: async (editor: Editor) => {
 				const selection = editor.getSelection();
@@ -77,7 +77,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 		this.addCommand({
 			id: "replace-select-language",
-			name: "Image To Text: Replace Selection - custom language",
+			name: "Replace Selection - custom language",
 			icon: "image-minus",
 			editorCallback: async (editor: Editor) => {
 				const selection = editor.getSelection();
@@ -124,7 +124,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 		this.addCommand({
 			id: "append",
-			name: "Image To Text: Append Selection",
+			name: "Append Selection",
 			icon: "image-plus",
 			editorCallback: async (editor: Editor) => {
 				const selection = editor.getSelection();
@@ -158,7 +158,7 @@ export default class ImageToTextOcrPlugin extends Plugin {
 
 		this.addCommand({
 			id: "append-select-language",
-			name: "Image To Text: Append Selection - custom language",
+			name: "Append Selection - custom language",
 			icon: "image-plus",
 			editorCallback: async (editor: Editor) => {
 				const selection = editor.getSelection();

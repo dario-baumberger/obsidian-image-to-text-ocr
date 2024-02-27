@@ -9,12 +9,12 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 
 ## Commands
 
-| Command                                            | Description                                                                                           |
-| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Image To Text: Replace Selection                   | Replace your image with the recognized text. Recognize text based on the language defined in settings |
-| Image To Text: Replace Selection - custom language | Replace your image with the recognized text. Recognize text based on custom selection                 |
-| Image To Text: Append Selection                    | Append the recognized text to your image. Recognize text based on language defined in settings        |
-| Image To Text: Append Selection - custom language  | Append the recognized text to your image. Recognize text based on custom selection                    |
+| Command                             | Description                                                                                           |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Replace Selection                   | Replace your image with the recognized text. Recognize text based on the language defined in settings |
+| Replace Selection - custom language | Replace your image with the recognized text. Recognize text based on custom selection                 |
+| Append Selection                    | Append the recognized text to your image. Recognize text based on language defined in settings        |
+| Append Selection - custom language  | Append the recognized text to your image. Recognize text based on custom selection                    |
 
 ## Example
 
