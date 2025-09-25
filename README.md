@@ -22,13 +22,13 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 
 ## Supported Image Types
 
--   .jpg
--   .jpeg
--   .png
--   .gif
--   .bmp
--   .pbm
--   .webp
+- .jpg
+- .jpeg
+- .png
+- .gif
+- .bmp
+- .pbm
+- .webp
 
 ## Supported Markup
 
@@ -44,14 +44,14 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 
 ### Community Plugin
 
--   Follow this link [Obsidian Plugin](https://obsidian.md/plugins?id=image-to-text-ocr)
--   Or open Obsidian Settings, go to Community Plugins, browse "Image to Text OCR" click install and activate.
+- Follow this link [Obsidian Plugin](https://obsidian.md/plugins?id=image-to-text-ocr)
+- Or open Obsidian Settings, go to Community Plugins, browse "Image to Text OCR" click install and activate.
 
 ### Manually installing the plugin
 
--   Go to the latest [Releases](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/releases)
--   Download `main.js`, `manifest.json`
--   save into your vault `VaultFolder/.obsidian/plugins/obsidian-image-to-text-ocr/`
+- Go to the latest [Releases](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/releases)
+- Download `main.js`, `manifest.json`
+- save into your vault `VaultFolder/.obsidian/plugins/obsidian-image-to-text-ocr/`
 
 ### Settings
 
@@ -66,6 +66,6 @@ This plugin uses [tesseract.js](https://github.com/naptha/tesseract.js/) to reco
 
 ## Contribution
 
--   Feel free to [open an issue](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/issues) if you miss something
--   Feel free to open a Pull request to implement a feature
-    -   Please extend tests if you add logic
+- Feel free to [open an issue](https://github.com/dario-baumberger/obsidian-image-to-text-ocr/issues) if you miss something
+- Feel free to open a Pull request to implement a feature
+    - Please extend tests if you add logic
