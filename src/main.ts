@@ -9,7 +9,10 @@ import {
 	isImgTag,
 	isMarkdownTag,
 	isObsidianTag,
-	isValidUrl
+	isValidUrl,
+	insertAltTextToObsidian,
+	insertAltTextToMarkdown,
+	insertAltTextToHtmlImg
 } from "./functions";
 import {LanguageModal} from "./modal";
 import {languages} from "./languages";
@@ -27,7 +30,7 @@ const DEFAULT_SETTINGS: ImageToTextOcrPluginSettings = {
 const MESSAGE_FILETYPE =
 	"Not supported file type. Allowed file types: .jpg, .jpeg, .png, .gif, .bmp, .pbm, .webp";
 const MESSAGE_CONTENT =
-	"Not supported content. Allowed: Obsidian Images, Markdown Images and Urls";
+	"Not supported content. Allowed: Obsidian Images, Markdown Images, HTML img tags and URLs";
 const MESSAGE_PATH = "Could not resolve image path";
 const MESSAGE_NOTFOUND = "Image file not found in the vault.";
 
@@ -192,6 +195,127 @@ export default class ImageToTextOcrPlugin extends Plugin {
 								editor.replaceSelection(
 									`${selection}\n${result}`
 								);
+							}
+						).open();
+					} catch (error) {
+						console.error(error);
+						new Notice(error);
+					}
+				}
+			}
+		});
+
+		this.addCommand({
+			id: "insert-as-alt-text",
+			name: "Insert as alt text",
+			icon: "image",
+			editorCallback: async (editor: Editor) => {
+				const selection = editor.getSelection();
+				const imagePath = await this.getSelectedImagePath(selection);
+
+				if (imagePath) {
+					try {
+						const loadingNotice = new Notice(MESSAGE_RUNNING, 0);
+
+						const result = await getText(
+							imagePath,
+							this.settings.language
+						);
+
+						if (this.settings.devMode) {
+							console.log(
+								`this.settings.language: ${this.settings.language}`
+							);
+							console.log(`result: ${result}`);
+						}
+
+						loadingNotice.hide();
+
+						let updatedSelection = selection;
+
+						if (isObsidianTag(selection)) {
+							updatedSelection = insertAltTextToObsidian(
+								selection,
+								result
+							);
+						} else if (isMarkdownTag(selection)) {
+							updatedSelection = insertAltTextToMarkdown(
+								selection,
+								result
+							);
+						} else if (isImgTag(selection)) {
+							updatedSelection = insertAltTextToHtmlImg(
+								selection,
+								result
+							);
+						}
+
+						editor.replaceSelection(updatedSelection);
+					} catch (error) {
+						console.error(error);
+						new Notice(error);
+					}
+				}
+			}
+		});
+
+		this.addCommand({
+			id: "insert-as-alt-text-select-language",
+			name: "Insert as alt text - custom language",
+			icon: "image",
+			editorCallback: async (editor: Editor) => {
+				const selection = editor.getSelection();
+				const imagePath = await this.getSelectedImagePath(selection);
+
+				if (imagePath) {
+					try {
+						new LanguageModal(
+							this.app,
+							"Text Language",
+							Object.entries(languages).map(([code, name]) => ({
+								code,
+								name
+							})),
+							async (language) => {
+								const loadingNotice = new Notice(
+									MESSAGE_RUNNING,
+									0
+								);
+
+								const result = await getText(
+									imagePath,
+									language.code
+								);
+
+								if (this.settings.devMode) {
+									console.log(
+										`this.settings.language: ${this.settings.language}`
+									);
+									console.log(`result: ${result}`);
+								}
+
+								loadingNotice.hide();
+
+								let updatedSelection = selection;
+
+								if (isObsidianTag(selection)) {
+									updatedSelection = insertAltTextToObsidian(
+										selection,
+										result
+									);
+								} else if (isMarkdownTag(selection)) {
+									updatedSelection = insertAltTextToMarkdown(
+										selection,
+										result
+									);
+								} else if (isImgTag(selection)) {
+									updatedSelection = insertAltTextToHtmlImg(
+										selection,
+										result
+									);
+								}
+
+								editor.replaceSelection(updatedSelection);
 							}
 						).open();
 					} catch (error) {

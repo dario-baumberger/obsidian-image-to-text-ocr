@@ -9,16 +9,18 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 
 ## Commands
 
-| Command                             | Description                                                                                           |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Replace selection                   | Replace your image with the recognized text. Recognize text based on the language defined in settings |
-| Replace selection - custom language | Replace your image with the recognized text. Recognize text based on custom selection                 |
-| Append selection                    | Append the recognized text to your image. Recognize text based on language defined in settings        |
-| Append selection - custom language  | Append the recognized text to your image. Recognize text based on custom selection                    |
+| Command                              | Description                                                                                                                                                     |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Replace selection                    | Replace your image with the recognized text. Recognize text based on the language defined in settings                                                           |
+| Replace selection - custom language  | Replace your image with the recognized text. Recognize text based on custom selection                                                                           |
+| Append selection                     | Append the recognized text to your image. Recognize text based on language defined in settings                                                                  |
+| Append selection - custom language   | Append the recognized text to your image. Recognize text based on custom selection                                                                              |
+| Insert as alt text                   | Insert the recognized text as alt text to your image. Recognize text based on language defined in settings. **Note:** This will overwrite any existing alt text |
+| Insert as alt text - custom language | Insert the recognized text as alt text to your image. Recognize text based on custom selection. **Note:** This will overwrite any existing alt text             |
 
 ## Example
 
-![Lorem ipsum Animated](./demo/loremipsum.gif)
+![Lorem ipsum Animated](https://raw.githubusercontent.com/dario-baumberger/obsidian-image-to-text-ocr/refs/heads/master/demo/loremipsum.png)
 
 ## Supported Image Types
 
@@ -32,13 +34,13 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 
 ## Supported Markup
 
-| Format                        | Example                                             | Description                        |
-| ----------------------------- | --------------------------------------------------- | ---------------------------------- |
-| Obsidian Image                | `![[example.png]]`                                  | Obsidian image tag                 |
-| Obsidian Image including size | `![[example.png\|300]]`                             | Obsidian image tag including size  |
-| Markdown Image                | `![Image](https://www.example.com/example.png)`     | Markdown image tag                 |
-| URL                           | `https://www.example.com/example.png`               | URL to an image                    |
-| img Tag                       | `<img src="https://www.example.com/example.png" />` | Img tag with a valid src attribute |
+| Format                        | Example                                             | Description                                                                          |
+| ----------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Obsidian Image                | `![[example.png]]`                                  | Obsidian image tag                                                                   |
+| Obsidian Image including size | `![[example.png\|300]]`                             | Obsidian image tag including size. Size is preserved when using "Insert as alt text" |
+| Markdown Image                | `![Image](https://www.example.com/example.png)`     | Markdown image tag                                                                   |
+| URL                           | `https://www.example.com/example.png`               | URL to an image                                                                      |
+| img Tag                       | `<img src="https://www.example.com/example.png" />` | Img tag with a valid src attribute                                                   |
 
 ## Installation
 
