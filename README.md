@@ -20,7 +20,7 @@ Recognize Text on images in your notes. Select the image and run the command. Th
 
 ## Example
 
-![Lorem ipsum Animated](https://raw.githubusercontent.com/dario-baumberger/obsidian-image-to-text-ocr/refs/heads/master/demo/loremipsum.png)
+![Lorem ipsum Animated](https://raw.githubusercontent.com/dario-baumberger/obsidian-image-to-text-ocr/refs/heads/master/demo/loremipsum.gif)
 
 ## Supported Image Types
 
